@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Boshqaruv Paneli (Dashboard)</h2>
+
+<div class="row mt-4">
+    <div class="col-md-3">
+        <div class="card text-white bg-primary mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Mahsulotlar</h5>
+                <p class="card-text display-4">{{ total_products }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-success mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Ta'minotchilar</h5>
+                <p class="card-text display-4">{{ total_suppliers }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-warning mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Bugungi Kirim</h5>
+                <p class="card-text display-6">{{ today_stock_in }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-danger mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Bugungi Chiqim</h5>
+                <p class="card-text display-6">{{ today_stock_out }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h4 class="mt-4 text-danger">
+    {% if user.role == "admin" %}
+    Kam qolgan mahsulotlar
+    {% else %}
+    Kam qolgan mahsulotlar, shoshiling!
+    {% endif %}
+</h4>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Mahsulot</th>
+            <th>Qoldiq</th>
+            <th>Min. Chegara</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for product in low_stock_products %}
+        <tr class="table-danger">
+            <td>{{ product.name }}</td>
+            <td>{{ product.stock }}</td>
+            <td>{{ product.min_stock }}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="3">Hammasi joyida!</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

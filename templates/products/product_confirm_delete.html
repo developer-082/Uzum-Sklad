@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6">
+        <div class="card border-danger shadow">
+            <div class="card-header bg-danger text-white">
+                <h4 class="mb-0">⚠️ Diqqat!</h4>
+            </div>
+            <div class="card-body text-center">
+                <p class="lead">Siz haqiqatan ham <strong>"{{ product.name }}"</strong> mahsulotini o'chirmoqchimisiz?</p>
+                <p class="text-muted">Bu amalni ortga qaytarib bo'lmaydi.</p>
+                
+                <form method="post">
+                    {% csrf_token %}
+                    <a href="{% url 'product_list' %}" class="btn btn-secondary">Yo'q, qaytish</a>
+                    <button type="submit" class="btn btn-danger">Ha, o'chirish</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

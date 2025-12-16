@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="text-danger">📤 Chiqimlar (Sotuv) Tarixi</h2>
+    <a href="{% url 'stock_out_create' %}" class="btn btn-danger">- Chiqim Qilish</a>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Sana</th>
+                    <th>Mahsulot</th>
+                    <th>Xaridor (Mijoz)</th>
+                    <th>Soni</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in stock_outs %}
+                <tr>
+                    <td>{{ item.created_at|date:"d.m.Y H:i" }}</td>
+                    <td><strong>{{ item.product.name }}</strong></td>
+                    <td>{{ item.customer_name }}</td>
+                    <td><span class="badge bg-danger">- {{ item.quantity }}</span></td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="4" class="text-center">Hali chiqim qilinmagan.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

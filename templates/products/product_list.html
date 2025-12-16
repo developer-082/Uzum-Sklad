@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Mahsulotlar Ro'yxati</h2>
+    
+    {% if user.role == 'admin' %}
+    <a href="{% url 'product_create' %}" class="btn btn-success">
+        + Yangi Mahsulot
+    </a>
+    {% endif %}
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <table class="table table-hover">
+            <thead class="table-light">
+                <tr>
+                    <th>Nomi</th>
+                    <th>SKU</th>
+                    <th>Kategoriya</th>
+                    <th>Ta'minotchi</th>
+                    <th>Qoldiq (Stock)</th>
+                    <th>Narxi</th>
+                    {% if user.role == 'admin' %}
+                        <th>Amallar</th>
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in products %}
+                <tr class="{% if product.is_low_stock %}table-danger{% endif %}">
+                    <td>
+                        <strong>{{ product.name }}</strong>
+                        {% if product.is_low_stock %}
+                            <span class="badge bg-danger ms-1">Kam qoldi!</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ product.sku }}</td>
+                    <td>{{ product.category }}</td>
+                    <td>{{ product.supplier.name }}</td>
+                    
+                    <td>
+                        {{ product.stock }}
+                        <small class="text-muted"> / min: {{ product.min_stock }}</small>
+                    </td>
+                    
+                    <td>{{ product.price }} so'm</td>
+                    
+                    {% if user.role == 'admin' %}
+                    <td>
+                        <a href="{% url 'product_edit' product.pk %}" class="btn btn-sm btn-warning">✏️</a>
+                        <a href="{% url 'product_delete' product.pk %}" class="btn btn-sm btn-danger">🗑️</a>
+                    </td>
+                    {% endif %}
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7" class="text-center text-muted">Mahsulotlar mavjud emas.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

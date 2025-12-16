@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 class="mb-4">Statistika va Hisobotlar</h2>
+
+<div class="row mb-4">
+    
+    <div class="col-md-6">
+        <div class="card text-white bg-primary shadow h-100">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="card-title">Jami Xarajat (Kirim)</h6>
+                        <h2 class="mb-0">{{ chiqimlar }} so'm</h2>
+                    </div>
+                    <div style="font-size: 3rem;">📥</div>
+                </div>
+                <small>Omborga tovar olib kelish uchun sarflangan summa</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card text-white bg-success shadow h-100">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="card-title">Jami Savdo (Chiqim)</h6>
+                        <h2 class="mb-0">{{ kirimlar }} so'm</h2>
+                    </div>
+                    <div style="font-size: 3rem;">💰</div>
+                </div>
+                <small>Tovarlarni sotishdan tushgan summa</small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="alert {% if profit >= 0 %}alert-success{% else %}alert-danger{% endif %} text-center">
+    <strong>Taxminiy Sof Foyda:</strong> {{ foyda }} so'm
+</div>
+
+<div class="row">
+    
+    <div class="col-md-6">
+        <div class="card shadow">
+            <div class="card-header bg-dark text-white">
+                <h5 class="mb-0">🔥 Eng xaridorgir mahsulotlar top 5taligi</h5>
+            </div>
+            <table class="table table-hover mb-0">
+                <thead>
+                    <tr>
+                        <th>Mahsulot</th>
+                        <th class="text-end">Sotilgan soni</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for p in top_sotilgan %}
+                    <tr>
+                        <td>{{ p.product.name }}</td>
+                        <td class="text-end">
+                            <span class="badge bg-warning">{{ p.quantity|default:0 }} dona</span>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="2">Ma'lumot yo'q</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card shadow">
+            <div class="card-header bg-secondary text-white">
+                <h5 class="mb-0">🚚 Faol Ta'minotchilar top 5 talik</h5>
+            </div>
+            <table class="table table-hover mb-0">
+                <thead>
+                    <tr>
+                        <th>Ta'minotchi</th>
+                        <th class="text-end">Kirim soni</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for s in top_suppliers %}
+                    <tr>
+                        <td>{{ s.name }}</td>
+                        <td class="text-end">
+                            <span class="badge bg-info text-dark">{{ s.soni|default:0 }} dona</span>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="2">Ma'lumot yo'q</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

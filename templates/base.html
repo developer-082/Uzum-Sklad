@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <title>
+        {% block title %}
+        Ombor Tizimi
+        {% endblock %}
+    </title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f8f9fa; }
+        .sidebar { min-height: 100vh; background-color: #343a40; color: white; }
+        .sidebar a { color: white; text-decoration: none; padding: 10px; display: block; }
+        .sidebar a:hover { background-color: #495057; }
+    </style>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+<div class="col-md-2 sidebar p-3 text-white" style="background-color: #343a40; min-height: 100vh;">
+    <h4 class="mb-4">Uzum Sklad</h4>
+    <hr>
+    
+    <a href="{% url 'dashboard' %}" class="d-block text-white text-decoration-none p-2 hover-effect">
+        📊 Bosh menyu
+    </a>
+    <a href="{% url 'product_list' %}" class="d-block text-white text-decoration-none p-2 hover-effect">
+        📦 Mahsulotlar
+    </a>
+
+    {% if user.role == 'admin' %}
+        <a href="{% url 'supplier_list' %}" class="d-block text-white text-decoration-none p-2 hover-effect">
+            🚚 Ta'minotchilar
+        </a>
+        <a href="{% url 'stock_in_list' %}" class="d-block text-white text-decoration-none p-2 hover-effect">
+            📥 Kirim
+        </a>
+        <a href="{% url 'stock_out_list' %}" class="d-block text-white text-decoration-none p-2 hover-effect">
+            📤 Chiqim
+        </a>
+    {% endif %}
+
+    <hr>
+    
+    {% if user.is_authenticated %}
+        <div class="mt-3">
+            <p class="small mb-1">👤 {{ user.username }} ({{ user.role }})</p>
+            <form action="{% url 'logout' %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-outline-light btn-sm w-100">Chiqish</button>
+            </form>
+        </div>
+    {% else %}
+        <a href="{% url 'login' %}" class="btn btn-primary w-100">Kirish</a>
+    {% endif %}
+</div>
+        <div class="col-md-10 p-4">
+            {% block content %}
+            {% endblock %}
+        </div>
+    </div>
+</div>
+</body>
+</html>
