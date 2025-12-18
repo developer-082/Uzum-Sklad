@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="text-success">📥 Kirimlar Tarixi</h2>
+    <a href="{% url 'stock_in_create' %}" class="btn btn-success">+ Kirim Qilish</a>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Sana</th>
+                    <th>Mahsulot</th>
+                    <th>Kimdan (Supplier)</th>
+                    <th>Soni</th>
+                    <th>Kelish narxi</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in stock_ins %}
+                <tr>
+                    <td>{{ item.created_at|date:"d.m.Y H:i" }}</td>
+                    <td><strong>{{ item.product.name }}</strong></td>
+                    <td>{{ item.supplier.name }}</td>
+                    <td><span class="badge bg-success">+ {{ item.quantity }}</span></td>
+                    <td>{{ item.purchase_price }} so'm</td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="5" class="text-center">Hali kirim qilinmagan.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
